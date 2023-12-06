@@ -22,6 +22,9 @@ class CasosSimilares:
                 if novo_caso[i] is None or caso_valores[i] is None:
                     similaridade[i] = 0
                     continue
+                if novo_caso[i] == caso_valores[i]:
+                    similaridade[i] = 1
+                    continue
                 if abs(novo_caso[i] - caso_valores[i]) < abs(novo_caso[i] - (caso_valores[i] + 12)):
                     similaridade[i] = 1 - abs(novo_caso[i] - caso_valores[i]) / (self.tabela_similaridade[i][-1] - self.tabela_similaridade[i][0])
                     #print(similaridade[i], "entrou aqui")

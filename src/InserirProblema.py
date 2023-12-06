@@ -274,16 +274,16 @@ def tela_selecao_atributos():
 
                 
             def btn_atualizar():
-                item_selecionado = combobox.get()
+                item_selecionado = casos_ordendados[combobox.current()][0] 
 
                 # Se houver um item selecionado, imprima suas informações
                 if item_selecionado:                    
-                    atualizar_treeview(int(item_selecionado))
-                    return atualizar_texto(int(item_selecionado))
+                    atualizar_treeview(item_selecionado)
+                    return atualizar_texto(item_selecionado)
                 else:
                     pass
             
-            combobox = ttk.Combobox(janela3, values=[f"{casos_ordendados[0][0]}",f"{casos_ordendados[1][0]}", f"{casos_ordendados[2][0]}", f"{casos_ordendados[3][0]}", f"{casos_ordendados[4][0]}"], state="readonly")
+            combobox = ttk.Combobox(janela3, values=[f"{casos_ordendados[0][1]}",f"{casos_ordendados[1][1]}", f"{casos_ordendados[2][1]}", f"{casos_ordendados[3][1]}", f"{casos_ordendados[4][1]}"], state="readonly")
             combobox.current(0)
             combobox.grid(row=5, column=0, pady=5, padx=10)
 
@@ -305,18 +305,31 @@ def tela_selecao_atributos():
 
 
             btn_voltar = tk.Button(janela3, text="Voltar", command= lambda:[janela2.deiconify(), janela3.destroy()])
-            btn_voltar.grid(row=8, column=0, pady=5, padx=20, sticky='w')
+            btn_voltar.grid(row=9, column=0, pady=5, padx=20, sticky='w')
 
             def popup_salvar_bd():
                 nome_caso = btn_atualizar()
-                salvar_caso(novo_caso, nome_caso)
+                
+                def popup_fechar():
+                    popup = tk.Toplevel(janela3)
+                    popup.title("Salvar Caso")
+                    popup.geometry("300x100")
+                    salvar_caso(novo_caso, nome_caso)
+                    texto = tk.Label(popup, text="O novo caso foi salvo como: " + nome_caso)
+                    texto.pack(pady=10)
+                    btn_fechar = tk.Button(popup, text="Fechar", command= lambda:[popup.destroy()])
+                    btn_fechar.pack(pady=10)
+                    popup.grab_set()
+                
                 popup = tk.Toplevel(janela3)
                 popup.title("Salvar Caso")
                 popup.geometry("300x100")
-                texto = tk.Label(popup, text="O novo caso foi salvo como: " + nome_caso)
-                texto.pack(pady=10)
-                btn_fechar = tk.Button(popup, text="Fechar", command= lambda:[popup.destroy()])
-                btn_fechar.pack(pady=10)
+                texto_confirm = tk.Label(popup, text="Salvar caso como: " + nome_caso + " ?")
+                texto_confirm.pack(pady=10)
+                btn_cancelar = tk.Button(popup, text="Cancelar", command= lambda:[popup.destroy()])
+                btn_salvar = tk.Button(popup, text="Salvar", command=lambda:[popup.destroy(), popup_fechar()])
+                btn_cancelar.pack(side=tk.LEFT, padx=40)
+                btn_salvar.pack(side=tk.RIGHT, padx=40)
                 popup.grab_set()
                 
                 
@@ -327,10 +340,10 @@ def tela_selecao_atributos():
             btn_salvar.grid(row=6, column=2, pady=5, padx=100)
 
             btn_novo_caso = tk.Button(janela3, text="Novo Caso", command= lambda:[janela.deiconify(), janela3.destroy()])
-            btn_novo_caso.grid(row=8, column=1, pady=5, padx=5)
+            btn_novo_caso.grid(row=9, column=1, pady=5, padx=5)
 
             btn_fechar = tk.Button(janela3, text="Fechar", command= lambda:[janela3.destroy(), janela2.destroy(), janela.destroy()])
-            btn_fechar.grid(row=8, column=2, pady=5, padx=20, sticky='e')
+            btn_fechar.grid(row=9, column=2, pady=5, padx=20, sticky='e')
 
 
 
